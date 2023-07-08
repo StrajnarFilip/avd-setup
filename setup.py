@@ -73,25 +73,16 @@ sdk_manager_path = join(bin_path,
                          if bin.startswith("sdkmanager")][0])
 
 run([sdk_manager_path, "--install", "platform-tools"])
-sleep(1)
-
-run([sdk_manager_path, "--install", "build-tools;32.0.0"])
-sleep(1)
-
 run([sdk_manager_path, "--install", "build-tools;34.0.0"])
-sleep(1)
-
 run([
     sdk_manager_path, "--install",
     "system-images;android-34;google_apis_playstore;x86_64"
 ])
-sleep(1)
 
 run([
     avd_manager_path, "create", "avd", "--name", "Machine1", "--device", "28",
     "--package", "system-images;android-34;google_apis_playstore;x86_64"
 ])
-sleep(1)
 
 emulator_bins = listdir(emulator_path)
 emulator_path = join(emulator_path, [
