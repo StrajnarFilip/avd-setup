@@ -4,12 +4,19 @@ from requests import get
 from os import listdir, rename, mkdir, environ
 from os.path import abspath, join, isfile, isdir
 from subprocess import run
+from sys import executable
+from time import sleep
+
+run([executable, "-m", "ensurepip"])
+run([executable, "-m", "pip", "install", "requests"])
+sleep(1)
 
 zip_path = "commandlinetools.zip"
 
 android_dir = abspath(join(".android"))
 cmdline_path = join(android_dir, "cmdline-tools")
 platform_path = join(android_dir, "platforms")
+avd_home_path = join(android_dir, "avd")
 
 download_url = {
     "win32":
@@ -46,7 +53,11 @@ ensure_android()
 if not isdir(platform_path):
     mkdir(platform_path)
 
+if not isdir(avd_home_path):
+    mkdir(avd_home_path)
+
 environ["ANDROID_SDK_ROOT"] = android_dir
+environ["ANDROID_AVD_HOME"] = avd_home_path
 
 bin_path = join(cmdline_path, "latest", "bin")
 bins = listdir(bin_path)
@@ -60,11 +71,15 @@ sdk_manager_path = join(bin_path,
                          if bin.startswith("sdkmanager")][0])
 
 run([sdk_manager_path, "--install", "platform-tools"])
+sleep(1)
 run([sdk_manager_path, "--install", "build-tools;32.0.0"])
+sleep(1)
+run([sdk_manager_path, "--install", "build-tools;34.0.0"])
 run([
     sdk_manager_path, "--install",
     "system-images;android-34;google_apis_playstore;x86_64"
 ])
+sleep(1)
 run([
     avd_manager_path, "create", "avd", "--name", "Machine1", "--device", "28",
     "--package", "system-images;android-34;google_apis_playstore;x86_64"
