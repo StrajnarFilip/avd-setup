@@ -51,7 +51,6 @@ environ["ANDROID_SDK_ROOT"] = android_dir
 bin_path = join(cmdline_path, "latest", "bin")
 bins = listdir(bin_path)
 emulator_path = join(android_dir, "emulator")
-emulator_bins = listdir(emulator_path)
 
 avd_manager_path = join(bin_path,
                         [bin for bin in bins
@@ -59,15 +58,6 @@ avd_manager_path = join(bin_path,
 sdk_manager_path = join(bin_path,
                         [bin for bin in bins
                          if bin.startswith("sdkmanager")][0])
-
-emulator_path = join(emulator_path, [
-    bin for bin in emulator_bins
-    if bin.startswith("emulator") and ("-" not in bin)
-][0])
-
-print(avd_manager_path)
-print(sdk_manager_path)
-print(emulator_path)
 
 run([sdk_manager_path, "--install", "platform-tools"])
 run([sdk_manager_path, "--install", "build-tools;32.0.0"])
@@ -79,5 +69,11 @@ run([
     avd_manager_path, "create", "avd", "--name", "Machine1", "--device", "28",
     "--package", "system-images;android-32;google_apis_playstore;x86_64"
 ])
+
+emulator_bins = listdir(emulator_path)
+emulator_path = join(emulator_path, [
+    bin for bin in emulator_bins
+    if bin.startswith("emulator") and ("-" not in bin)
+][0])
 
 run([emulator_path, "-avd", "Machine1"])
