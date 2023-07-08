@@ -63,11 +63,11 @@ run([sdk_manager_path, "--install", "platform-tools"])
 run([sdk_manager_path, "--install", "build-tools;32.0.0"])
 run([
     sdk_manager_path, "--install",
-    "system-images;android-32;google_apis_playstore;x86_64"
+    "system-images;android-34;google_apis_playstore;x86_64"
 ])
 run([
     avd_manager_path, "create", "avd", "--name", "Machine1", "--device", "28",
-    "--package", "system-images;android-32;google_apis_playstore;x86_64"
+    "--package", "system-images;android-34;google_apis_playstore;x86_64"
 ])
 
 emulator_bins = listdir(emulator_path)
